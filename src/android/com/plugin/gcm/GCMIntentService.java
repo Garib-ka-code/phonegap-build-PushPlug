@@ -15,6 +15,7 @@ import android.util.Log;
 
 import com.google.android.gcm.GCMBaseIntentService;
 
+import com.myapp.myappname.R;
 @SuppressLint("NewApi")
 public class GCMIntentService extends GCMBaseIntentService {
 
@@ -78,7 +79,7 @@ public class GCMIntentService extends GCMBaseIntentService {
             }
         }
 	}
-
+	public static int notId = 0;
 	public void createNotification(Context context, Bundle extras)
 	{
 		NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -101,7 +102,8 @@ public class GCMIntentService extends GCMBaseIntentService {
 		NotificationCompat.Builder mBuilder =
 			new NotificationCompat.Builder(context)
 				.setDefaults(defaults)
-				.setSmallIcon(context.getApplicationInfo().icon)
+				.setSmallIcon(R.drawable.noticon)
+				//.setSmallIcon(context.getApplicationInfo().icon)
 				.setWhen(System.currentTimeMillis())
 				.setContentTitle(extras.getString("title"))
 				.setTicker(extras.getString("title"))
@@ -111,6 +113,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 		String message = extras.getString("message");
 		if (message != null) {
 			mBuilder.setContentText(message);
+			mBuilder.setStyle(new NotificationCompat.BigTextStyle().bigText(message));//add this line
 		} else {
 			mBuilder.setContentText("<missing message content>");
 		}
@@ -120,8 +123,8 @@ public class GCMIntentService extends GCMBaseIntentService {
 			mBuilder.setNumber(Integer.parseInt(msgcnt));
 		}
 		
-		int notId = 0;
 		
+		notId++;
 		try {
 			notId = Integer.parseInt(extras.getString("notId"));
 		}
